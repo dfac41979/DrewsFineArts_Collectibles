@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DFAC – Drew’s Fine Arts & Collectibles Authentication Registry</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=EB+Garamond:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-parchment: #EDE3D1;
+      --text-dark: #1C1C1C;
+      --graphite: #3A3A3A;
+      --gold-muted: #8C744A;
+      --verify-green: #2F6F44;
+      --warning-red: #7A1E1E;
+
+      --font-heading: 'Playfair Display', Georgia, serif;
+      --font-body: 'EB Garamond', Georgia, serif;
+      --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      background: var(--bg-parchment);
+      color: var(--text-dark);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* Faint full-page crest background */
+    .bg-crest {
+      position: fixed;
+      inset: 0;
+      background-image: url('https://files.catbox.moe/8x3n3q.png'); /* Replace with your low-opacity crest URL */
+      background-size: 70vmin auto;
+      background-repeat: no-repeat;
+      background-position: center 15%;
+      opacity: 0.09;
+      pointer-events: none;
+      z-index: -2;
+    }
+
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: rgba(28,28,28,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(140,116,74,0.25);
+      z-index: 1000;
+      padding: 1rem 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo img { height: 60px; width: auto; }
+
+    nav ul {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    nav a {
+      color: #EDE3D1;
+      text-decoration: none;
+      font-family: var(--font-heading);
+      font-weight: 500;
+    }
+
+    nav a:hover { color: var(--gold-muted); }
+
+    main { padding-top: 100px; padding-bottom: 80px; }
+
+    section { padding: 4rem 5%; max-width: 1200px; margin: 0 auto; }
+
+    h1, h2 { font-family: var(--font-heading); font-weight: 700; margin-bottom: 1.5rem; text-align: center; }
+
+    .btn {
+      background: var(--gold-muted);
+      color: white;
+      padding: 0.9rem 2rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      display: block;
+      margin: 1rem auto;
+      text-align: center;
+    }
+
+    .btn:hover { background: #a68b5f; }
+
+    .card {
+      background: white;
+      border: 1px solid rgba(140,116,74,0.2);
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+      margin: 2rem 0;
+    }
+
+    .serial { font-family: var(--font-mono); background: rgba(140,116,74,0.08); padding: 4px 8px; border-radius: 4px; }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    input {
+      padding: 14px;
+      font-size: 1.2rem;
+      text-align: center;
+      font-family: var(--font-mono);
+      border: 1px solid #8C744A80;
+      border-radius: 6px;
+      width: 100%;
+    }
+
+    footer {
+      background: #1C1C1C;
+      color: #EDE3D1;
+      text-align: center;
+      padding: 3rem 5%;
+      border-top: 1px solid rgba(140,116,74,0.25);
+    }
+
+    .donate-btn {
+      background: var(--gold-muted);
+      color: white;
+      padding: 12px 28px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin: 1rem 0;
+    }
+
+    .donate-btn:hover { background: #a68b5f; }
+
+    #admin-section { display: none; }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .metric-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      text-align: center;
+      border: 1px solid rgba(140,116,74,0.2);
+    }
+
+    .metric-value { font-size: 2rem; font-weight: bold; color: var(--gold-muted); }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1.5rem;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid rgba(140,116,74,0.2);
+    }
+
+    th { background: rgba(140,116,74,0.08); }
+
+    .action-btn {
+      background: none;
+      border: none;
+      color: var(--gold-muted);
+      cursor: pointer;
+      margin-right: 12px;
+    }
+
+    @media (max-width: 768px) {
+      header { flex-direction: column; gap: 1rem; padding: 1rem; }
+      nav ul { flex-wrap: wrap; justify-content: center; gap: 1rem; }
+      .input-group { flex-direction: column; }
+      .btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-crest"></div>
+
+  <!-- Header -->
+  <header>
+    <div class="logo">
+      <img src="https://files.catbox.moe/8x3n3q.png" alt="DFAC Certified Authentic" style="height:60px;">
+    </div>
+    <nav>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#verify">Verify</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="#" onclick="showAdmin()">Admin</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Home -->
+    <section id="home" style="text-align:center; padding:5rem 5% 3rem;">
+      <h1>DFAC Authentication Registry</h1>
+      <p>Drew’s Fine Arts & Collectibles – Independent Authority for Authentication & Provenance</p>
+      <a href="#verify" class="btn">Verify a Record</a>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="card">
+      <h1>About DFAC</h1>
+      <p>Drew’s Fine Arts & Collectibles Certification and Authentication Committee (DFAC) provides formal, institutional-grade authentication services for fine arts, collectibles, and cultural objects.</p>
+      <p>Every certificate is digitally logged, immutable, and contributes to provenance integrity across the global collecting community.</p>
+      <p>Founded on principles of trust, precision, and permanence, DFAC serves as an independent authority in the authentication space.</p>
+    </section>
+
+    <!-- Verify -->
+    <section id="verify" class="card">
+      <h1>Verify Authentication</h1>
+      <div class="input-group">
+        <input type="text" id="serialInput" placeholder="Enter DFAC Serial Number">
+        <button onclick="verifySerial()" class="btn">VERIFY RECORD</button>
+      </div>
+      <div id="verifyResult" style="margin-top:30px; min-height:200px;"></div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing">
+      <h1>Pricing Tiers</h1>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:2rem;">
+        <div class="card">
+          <h2>Standard Authentication</h2>
+          <p>$49 – $99</p>
+          <ul>
+            <li>Digital Certificate</li>
+            <li>Registry Listing</li>
+            <li>QR Verification</li>
+            <li>Basic Dashboard Access</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h2>Executive Authentication</h2>
+          <p>$149 – $299</p>
+          <ul>
+            <li>All Standard features</li>
+            <li>Priority Review</li>
+            <li>Executive Seal Variation</li>
+            <li>Transfer Tracking</li>
+            <li>Enhanced Registry Visibility</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h2>Founder’s Edition</h2>
+          <p>$750 – $1,500</p>
+          <ul>
+            <li>Limited lifetime issuance (100 total)</li>
+            <li>Gold-trim certificate</li>
+            <li>Founder badge in registry</li>
+            <li>Priority transfer processing</li>
+            <li>Private collector recognition tier</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="card">
+      <h1>Contact Us</h1>
+      <form onsubmit="alert('Thank you! Your message has been sent.'); return false;">
+        <input type="text" placeholder="Your Name" required>
+        <input type="email" placeholder="Your Email" required>
+        <textarea placeholder="Your Message" rows="5" required></textarea>
+        <button type="submit" class="btn">Send Message</button>
+      </form>
+      <p style="margin-top:2rem;">Email: verification@dfacregistry.com</p>
+    </section>
+
+    <!-- Admin Dashboard -->
+    <section id="admin-section" class="card" style="display:none;">
+      <h1>DFAC Registry Administration</h1>
+      <button onclick="logoutAdmin()" class="btn" style="background:var(--warning-red); float:right;">Logout</button>
+
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <p>Total Certificates Issued</p>
+          <div class="metric-value">248</div>
+        </div>
+        <div class="metric-card">
+          <p>Active Certificates</p>
+          <div class="metric-value">212</div>
+        </div>
+        <div class="metric-card">
+          <p>Founder Certificates</p>
+          <div class="metric-value">17</div>
+        </div>
+        <div class="metric-card">
+          <p>Pending Transfers</p>
+          <div class="metric-value">5</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Recent Activity Log</h2>
+        <ul>
+          <li>2h ago – DFAC-2026-ART-000152 Verified</li>
+          <li>5h ago – Transfer Request Submitted</li>
+          <li>1d ago – Founder Tier Certificate Issued</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>A portion of every authentication fee supports Alzheimer’s and dementia research through the Alzheimer’s Association.</p>
+    <a href="https://act.alz.org/site/Donation2?df_id=33828&mfc_pref=T&33828.donation=form1" target="_blank" class="donate-btn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+      Donate Now
+    </a>
+    <p style="margin-top:2rem; opacity:0.8;">© 2026 Drew’s Fine Arts & Collectibles. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Simple admin login
+    function showAdmin() {
+      const user = prompt("Admin Username:");
+      const pass = prompt("Admin Password:");
+      if (user === "admin" && pass === "dfac2026") {
+        document.getElementById("admin-section").style.display = "block";
+        document.getElementById("admin-section").scrollIntoView({ behavior: "smooth" });
+      } else {
+        alert("Access denied.");
+      }
+    }
+
+    function logoutAdmin() {
+      document.getElementById("admin-section").style.display = "none";
+      alert("Logged out successfully.");
+    }
+
+    // Verify function (mock for now)
+    function verifySerial() {
+      const input = document.getElementById("serialInput");
+      const serial = input.value.trim().toUpperCase();
+      const resultDiv = document.getElementById("verifyResult");
+
+      if (!serial) {
+        resultDiv.innerHTML = '<p style="color:var(--warning-red);">Please enter a serial number.</p>';
+        return;
+      }
+
+      resultDiv.innerHTML = '<p>Verifying...</p>';
+
+      setTimeout(() => {
+        if (serial.includes("DFAC-2026-ART-000152")) {
+          resultDiv.innerHTML = `
+            <div style="background:rgba(47,111,68,0.1); padding:20px; border-radius:8px; border:1px solid #2F6F44;">
+              <h3 style="color:var(--verify-green); margin-bottom:15px;">AUTHENTICATION VERIFIED</h3>
+              <p><strong>Serial Number:</strong> <span class="serial">${serial}</span></p>
+              <p><strong>Item Title:</strong> Midnight Study</p>
+              <p><strong>Artist:</strong> J. Rivera</p>
+              <p><strong>Authentication Date:</strong> February 14, 2026</p>
+              <p><strong>Status:</strong> Active</p>
+              <p><strong>Registry ID:</strong> <span class="serial">DFAC-RG-889102</span></p>
+
+              <div style="margin-top:30px; padding:20px; background:rgba(140,116,74,0.08); border-radius:8px;">
+                <p>A portion of DFAC fees supports Alzheimer’s and dementia research through the Alzheimer’s Association.</p>
+                <a href="https://act.alz.org/site/Donation2?df_id=33828&mfc_pref=T&33828.donation=form1" target="_blank" class="donate-btn">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                  Donate Now
+                </a>
+              </div>
+            </div>`;
+        } else {
+          resultDiv.innerHTML = '<p style="color:var(--warning-red); font-weight:bold;">AUTHENTICATION RECORD NOT FOUND</p>';
+        }
+      }, 1200);
+    }
+  </script>
+</body>
+</html>
