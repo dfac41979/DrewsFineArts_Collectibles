@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DFAC – Verify</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="bg-crest"></div>
+
+  <header>
+    <div class="logo">
+      <img src="images/dfac-crest-gold.png" alt="DFAC Logo">
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="verify.html">Verify</a></li>
+        <li><a href="pricing.html">Pricing</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="admin.html">Admin</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="card">
+      <h1>Verify Authentication</h1>
+      <input type="text" id="serial" placeholder="Enter DFAC Serial Number" style="width:100%; padding:14px; font-size:1.2rem; text-align:center; margin-bottom:15px; font-family:var(--font-mono); border:1px solid #8C744A80; border-radius:6px;">
+      <button onclick="verify()" class="btn" style="width:100%; padding:14px; font-size:1.2rem;">VERIFY RECORD</button>
+      <div id="result" style="margin-top:30px;"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>A portion of every authentication fee supports Alzheimer’s and dementia research through the Alzheimer’s Association.</p>
+    <a href="https://act.alz.org/site/Donation2?df_id=33828&mfc_pref=T&33828.donation=form1" target="_blank" class="donate-btn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+      Donate Now
+    </a>
+    <p style="margin-top:2rem; opacity:0.8;">© 2026 Drew’s Fine Arts & Collectibles. All rights reserved.</p>
+  </footer>
+
+  <script>
+    function verify() {
+      const serial = document.getElementById('serial').value.trim().toUpperCase();
+      const result = document.getElementById('result');
+
+      if (!serial) {
+        result.innerHTML = '<p style="color:var(--warning-red);">Please enter a serial number.</p>';
+        return;
+      }
+
+      result.innerHTML = '<p>Verifying...</p>';
+
+      setTimeout(() => {
+        if (serial.includes('DFAC-2026-ART-000152')) {
+          result.innerHTML = `
+            <div style="background:rgba(47,111,68,0.1); padding:20px; border-radius:8px; border:1px solid #2F6F44;">
+              <h3 style="color:var(--verify-green);">AUTHENTICATION VERIFIED</h3>
+              <p><strong>Serial Number:</strong> <span style="font-family:var(--font-mono);">${serial}</span></p>
+              <p><strong>Item Title:</strong> Midnight Study</p>
+              <p><strong>Artist:</strong> J. Rivera</p>
+              <p><strong>Authentication Date:</strong> February 14, 2026</p>
+              <p><strong>Status:</strong> Active</p>
+              <p><strong>Registry ID:</strong> <span style="font-family:var(--font-mono);">DFAC-RG-889102</span></p>
+
+              <div style="margin-top:30px; padding:20px; background:rgba(140,116,74,0.08); border-radius:8px;">
+                <p>A portion of DFAC fees supports Alzheimer’s and dementia research through the Alzheimer’s Association.</p>
+                <a href="https://act.alz.org/site/Donation2?df_id=33828&mfc_pref=T&33828.donation=form1" target="_blank" class="donate-btn">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                  Donate Now
+                </a>
+              </div>
+            </div>`;
+        } else {
+          result.innerHTML = '<p style="color:var(--warning-red); font-weight:bold;">AUTHENTICATION RECORD NOT FOUND</p>';
+        }
+      }, 1200);
+    }
+  </script>
+</body>
+</html>
