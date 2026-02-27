@@ -1,0 +1,123 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=EB+Garamond:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap');
+
+:root {
+  --bg-parchment: #EDE3D1;
+  --text-dark: #1C1C1C;
+  --graphite: #3A3A3A;
+  --gold-muted: #8C744A;
+  --verify-green: #2F6F44;
+  --warning-red: #7A1E1E;
+
+  --font-heading: 'Playfair Display', Georgia, serif;
+  --font-body: 'EB Garamond', Georgia, serif;
+  --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--bg-parchment);
+  color: var(--text-dark);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+.bg-crest {
+  position: fixed;
+  inset: 0;
+  background-image: url('images/dfac-crest-bg.png');
+  background-size: 70vmin auto;
+  background-repeat: no-repeat;
+  background-position: center 15%;
+  opacity: 0.09;
+  pointer-events: none;
+  z-index: -2;
+}
+
+header {
+  background: rgba(28,28,28,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(140,116,74,0.25);
+  padding: 1rem 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.logo img { height: 60px; width: auto; }
+
+nav ul {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+}
+
+nav a {
+  color: #EDE3D1;
+  text-decoration: none;
+  font-family: var(--font-heading);
+  font-weight: 500;
+}
+
+nav a:hover { color: var(--gold-muted); }
+
+main { padding: 100px 5% 80px; max-width: 1200px; margin: 0 auto; }
+
+section { padding: 4rem 5%; }
+
+h1, h2 { font-family: var(--font-heading); font-weight: 700; margin-bottom: 1.5rem; }
+
+.btn {
+  background: var(--gold-muted);
+  color: white;
+  padding: 0.9rem 2rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+}
+
+.btn:hover { background: #a68b5f; }
+
+.card {
+  background: white;
+  border: 1px solid rgba(140,116,74,0.2);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+  margin: 2rem 0;
+}
+
+.serial { font-family: var(--font-mono); background: rgba(140,116,74,0.08); padding: 4px 8px; border-radius: 4px; }
+
+footer {
+  background: #1C1C1C;
+  color: #EDE3D1;
+  text-align: center;
+  padding: 3rem 5%;
+  border-top: 1px solid rgba(140,116,74,0.25);
+}
+
+.donate-btn {
+  background: var(--gold-muted);
+  color: white;
+  padding: 12px 28px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.donate-btn:hover { background: #a68b5f; }
+
+@media (max-width: 768px) {
+  header { flex-direction: column; gap: 1rem; padding: 1rem; }
+  nav ul { flex-wrap: wrap; justify-content: center; gap: 1rem; }
+}
