@@ -1,0 +1,23 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #ffffff;
+  position: relative;
+  min-height: 100vh;
+}
+
+/* Watermark background */
+body::before {
+  content: "";
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 700px;
+  height: 700px;
+  background: url("../assets/dfac-certified.png") no-repeat center center;
+  background-size: contain;
+  opacity: 0.12; /* 12% */
+  transform: translate(-50%, -50%);
+  z-index: -1;
+  pointer-events: none;
+}
